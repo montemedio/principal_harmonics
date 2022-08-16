@@ -4,8 +4,7 @@ from typing import Union
 import pya
 import numpy as np
 
-import principal_harmonics as ph
-
+from ..exceptions import *
 
 class ClipStrategy(ABC):
     """Abstract class for clip strategies.
@@ -99,4 +98,4 @@ def get_clip_strategy(strategy: Union[str, ClipStrategy]) -> ClipStrategy:
     elif strategy in CLIP_STRATEGIES:
         return CLIP_STRATEGIES[strategy]()
     else:
-        raise ph.StrategyException(f'Clip strategy {strategy}')
+        raise StrategyException(f'Clip strategy {strategy}')

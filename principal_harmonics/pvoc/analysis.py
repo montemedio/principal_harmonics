@@ -5,14 +5,16 @@ import sklearn.metrics
 from dataclasses import dataclass
 from typing import Union
 
-import principal_harmonics as ph
-
+from .pitch_estimation import *
+from .sinusoidal_analysis import *
+from .synth import *
+from .clipping import *
 
 def analyze(asig: pya.Asig,
             midi_note: int,
             pitch_mode: str,
             stride: int,
-            clip_strategy: Union[str, 'ph.pvoc.ClipStrategy'],
+            clip_strategy: Union[str, 'ClipStrategy'],
             **analysis_args) -> tuple['TimbreAnalysisResult', dict]:
     """Convenience wrapper around the analysis for a single sample.
 
@@ -32,13 +34,13 @@ def analyze(asig: pya.Asig,
     Returns:
         res: A TimbreAnalysisResult, metrics: A dict of analysis metrics
     """
-    pitches = ph.pvoc.get_pitch(asig, stride)
+    pitches = get_pitch(asig, stride)
 
     metrics = {}
 
     if pitch_mode == 'constant':
         expected_freq = pya.midicps(midi_note)
-        pitches = ph.pvoc.constant_pitch(pitches, expected_freq)
+        pitches = constant_pitch(pitches, expected_freq)
         metrics['pitch_dev'] = np.abs(pitches - expected_freq) / expected_freq
     elif pitch_mode == 'variable':
         # no further processing needed
@@ -46,12 +48,12 @@ def analyze(asig: pya.Asig,
     else:
         raise ValueError("Unknown pitch mode")
 
-    freqs, coefs = ph.pvoc.sinusoidal_analysis(asig, 
-                                               pitches, 
-                                               stride=stride, 
-                                               **analysis_args)
+    freqs, coefs = sinusoidal_analysis(asig, 
+                                       pitches, 
+                                       stride=stride, 
+                                       **analysis_args)
 
-    clip_strategy = ph.pvoc.get_clip_strategy(clip_strategy)
+    clip_strategy = get_clip_strategy(clip_strategy)
     clip_start, clip_end = clip_strategy.clip(coefs)
     assert clip_start < clip_end, "Clip strategy yielded empty signal."
 
@@ -60,7 +62,7 @@ def analyze(asig: pya.Asig,
     metrics['clip_start'] = clip_start * stride
     metrics['clip_end']   = clip_end   * stride
 
-    harm_tmp_     = ph.pvoc.phase_correct_resynth(freqs, coefs, asig.sr, stride)
+    harm_tmp_     = phase_correct_resynth(freqs, coefs, asig.sr, stride)
     harmonic_asig = _ensure_length(harm_tmp_, asig.samples)
     noise_asig    = asig - harmonic_asig
 

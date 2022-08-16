@@ -7,7 +7,7 @@ import pya
 import scipy.fft
 import numpy as np
 
-import principal_harmonics as ph
+from .peak_matching import *
 
 
 def sinusoidal_analysis(asig: pya.Asig,
@@ -50,7 +50,7 @@ def sinusoidal_analysis(asig: pya.Asig,
     freqs = np.zeros((n_frames, n_peaks), dtype=float)
     coefs = np.zeros((n_frames, n_peaks), dtype=complex)
 
-    peak_matcher = ph.pvoc.get_peak_matcher(peak_matching, n_frames)
+    peak_matcher = get_peak_matcher(peak_matching, n_frames)
 
     analysis_steps = []
     for i, fundamental in enumerate(fundamentals):

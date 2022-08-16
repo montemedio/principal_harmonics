@@ -7,7 +7,8 @@ import pandas as pd
 import librosa
 import pya
 
-import principal_harmonics as ph
+from ..exceptions import *
+from .filename_parsers import *
 
 
 class WriteLabelsException(ph.PhException):
@@ -31,11 +32,11 @@ def build_labels(base_dir: Union[str, Path], glob: str,
     """Build a labels.csv file inside a dataset directory"""
 
     if glob == 'labels.csv':
-        raise ph.ParameterException("glob cannot be labels.csv")
+        raise ParameterException("glob cannot be labels.csv")
 
     if isinstance(base_dir, str):
         base_dir = Path(base_dir)
-    parser = ph.dataset.get_filename_parser(parser)
+    parser = get_filename_parser(parser)
 
     _ensure_valid_directory(base_dir)
     df = parse_files(base_dir, glob, parser)
@@ -56,7 +57,7 @@ def _ensure_valid_directory(base_dir: Path):
 def parse_files(base_dir: Path, glob: str, parser: 'ph.dataset.FilenameParser'):
     """Parse all filenames matching `glob` inside `base_dir`, using a given `parser`.
     Returns a pd.DataFrame containing the labels for all files to be analyzed."""
-    parser = ph.dataset.get_filename_parser(parser)
+    parser = get_filename_parser(parser)
 
     files = _list_dir(base_dir, glob)
     default_fields = {'filename', 'midi', 'exclude'}

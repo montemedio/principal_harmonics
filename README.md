@@ -26,10 +26,12 @@ when using `pip install .`
 ## Getting started
 To reproduce the results in the notebooks, first, download the 
 [Philharmonia Sound Samples](https://philharmonia.co.uk/resources/sound-samples/), and extract them
-somewhere. Build the labels.csv files:
+somewhere. Build the labels.csv files: (note the single ticks around the glob
+argument. They are important, without them Bash will evaluate the glob
+expression itself!)
 ```
-python build-labels.py PATH/TO/CELLO/SAMPLES/
-python build-labels.py PATH/TO/GUITAR/SAMPLES/
+python build-labels.py --glob 'cello_*_15_*_arco-normal.mp3'    --filename-parser philharmonia PATH/TO/CELLO/SAMPLES/
+python build-labels.py --glob 'guitar_*_very-long_*_normal.mp3' --filename-parser philharmonia PATH/TO/GUITAR/SAMPLES/
 ```
 then run the analyses:
 ```

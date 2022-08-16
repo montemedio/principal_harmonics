@@ -4,8 +4,7 @@ from typing import Union
 import numpy as np
 import pya
 
-import principal_harmonics as ph
-
+from ..exceptions import *
 
 class PeakMatcher(ABC):
     """Abstract class for Peak Matcher implementations.
@@ -286,5 +285,5 @@ def get_peak_matcher(matcher: Union[str, PeakMatcher], n_frames=None) -> PeakMat
         assert n_frames is not None
         return PEAK_MATCHERS[matcher](n_frames)
     else:
-        raise ph.StrategyException(f'Unknown peak matcher strategy {matcher}')
+        raise StrategyException(f'Unknown peak matcher strategy {matcher}')
 
