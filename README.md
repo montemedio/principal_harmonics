@@ -38,3 +38,6 @@ then run the analyses:
 python build-dataset.py --clip-strategy=stationary --pitch-mode=variable PATH/TO/CELLO/SAMPLES/
 python build-dataset.py --clip-strategy=transient  --pitch-mode=constant PATH/TO/GUITAR/SAMPLES/
 ```
+
+Before running each notebook, make sure that paths in the first cell
+point to the datasets and the output directories.
