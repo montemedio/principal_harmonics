@@ -21,4 +21,9 @@ pip install .
 ```
 
 Dependencies are listed in `setup.py`, but should be automatically installed
-when using `pip install .`.
+when using `pip install .`
+
+To import the package, write
+```
+import principal_harmonics as ph
+```
