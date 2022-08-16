@@ -35,6 +35,15 @@ def plot_timbre_vectors(freqs: Union[float, np.ndarray],
                         coefs: np.ndarray, 
                         cmap='plasma', cutoff=-100,
                         colorbar=True):
+    """Generates a timbre plot similiar in spirit to an STFT spectogram.
+
+    Args:
+        freqs (Union[float, np.ndarray]): _description_
+        coefs (np.ndarray): _description_
+        cmap (str, optional): _description_. Defaults to 'plasma'.
+        cutoff (int, optional): _description_. Defaults to -100.
+        colorbar (bool, optional): _description_. Defaults to True.
+    """
 
     if isinstance(freqs, Real):
         n_peaks = coefs.shape[1]
@@ -95,6 +104,10 @@ def plot_2d_trajectory(X, interval=50):
 def plot_pca_trajectory(X, features=(0, 1), interval=50, 
                         note: Union[str, float]=None, pipeline=None,
                         **kwargs):
+    """
+    Generates a bivariate plot of two PCA control parameters. Pass a `pipeline` 
+    to resynthesize the timbres when the user clicks on the plot.
+    """
     assert X.ndim == 2
 
     x, y = X[:, features[0]], X[:, features[1]]
@@ -131,6 +144,8 @@ def _pca_trajectory_on_click(pipeline, features, veclength, note, evt):
 
 
 def plot_ampls(ampls, note = None, dbify=False, db_cutoff=-240, write_numbers=True, text_placement: int = 0, includes_dc=True):
+    """Plot the trajectory of multiple amplitudes vs. time.
+    """
     assert ampls.ndim == 2
 
     if ampls.dtype == complex:
