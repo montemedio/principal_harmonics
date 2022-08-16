@@ -23,7 +23,16 @@ pip install .
 Dependencies are listed in `setup.py`, but should be automatically installed
 when using `pip install .`
 
-To import the package, write
+## Getting started
+To reproduce the results in the notebooks, first, download the 
+[Philharmonia Sound Samples](https://philharmonia.co.uk/resources/sound-samples/), and extract them
+somewhere. Build the labels.csv files:
 ```
-import principal_harmonics as ph
+python build-labels.py PATH/TO/CELLO/SAMPLES/
+python build-labels.py PATH/TO/GUITAR/SAMPLES/
+```
+then run the analyses:
+```
+python build-dataset.py --clip-strategy=stationary --pitch-mode=variable PATH/TO/CELLO/SAMPLES/
+python build-dataset.py --clip-strategy=transient  --pitch-mode=constant PATH/TO/GUITAR/SAMPLES/
 ```
