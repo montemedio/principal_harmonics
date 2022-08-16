@@ -9,18 +9,19 @@ import pya
 
 from ..exceptions import *
 from .filename_parsers import *
+from ..pvoc.analysis import *
 
 
-class WriteLabelsException(ph.PhException):
+class WriteLabelsException(PhException):
     message = "Could not write labels.csv file"
 
-class ReadLabelsException(ph.PhException):
+class ReadLabelsException(PhException):
     message = "Could not read labels.csv file"
 
-class ReadDirectoryException(ph.PhException):
+class ReadDirectoryException(PhException):
     message = "Could not read from directory"
 
-class WriteAnalysisResultException(ph.PhException):
+class WriteAnalysisResultException(PhException):
     message = "Could not write analysis results"
 
 
@@ -28,7 +29,7 @@ class WriteAnalysisResultException(ph.PhException):
 
 
 def build_labels(base_dir: Union[str, Path], glob: str,
-                 parser: Union[str, 'ph.dataset.FilenameParser']) -> pd.DataFrame:
+                 parser: Union[str, 'FilenameParser']) -> pd.DataFrame:
     """Build a labels.csv file inside a dataset directory"""
 
     if glob == 'labels.csv':
@@ -54,7 +55,7 @@ def _ensure_valid_directory(base_dir: Path):
         raise WriteLabelsException(FileExistsError(output_file))
 
 
-def parse_files(base_dir: Path, glob: str, parser: 'ph.dataset.FilenameParser'):
+def parse_files(base_dir: Path, glob: str, parser: 'FilenameParser'):
     """Parse all filenames matching `glob` inside `base_dir`, using a given `parser`.
     Returns a pd.DataFrame containing the labels for all files to be analyzed."""
     parser = get_filename_parser(parser)
@@ -113,8 +114,8 @@ def build_dataset(base_dir: Path,
 
         asig = pya.Asig(str(asig_path)).norm()
         midi_note = row.midi
-        results, metrics = ph.pvoc.analyze(asig, midi_note, pitch_mode, stride, 
-                                           clip_strategy, **analysis_args) 
+        results, metrics = analyze(asig, midi_note, pitch_mode, stride, 
+                                   clip_strategy, **analysis_args) 
 
         _report_metrics(asig_path.name, metrics)
         _save_analysis(base_dir, asig_path.stem, results, metrics)
@@ -125,7 +126,7 @@ def _report_metrics(filename: str, metrics: dict):
 
 
 def _save_analysis(target_dir: Path, stem: str, 
-                   results: ph.pvoc.TimbreAnalysisResult,
+                   results: TimbreAnalysisResult,
                    metrics: dict):
 
     try:

@@ -87,7 +87,7 @@ def get_clip_strategy(strategy: Union[str, ClipStrategy]) -> ClipStrategy:
         strategy (Union[str, ClipStrategy]): 
 
     Raises:
-        ph.StrategyException: If the strategy string is not known.
+        StrategyException: If the strategy string is not known.
 
     Returns:
         ClipStrategy: A strategy of the speficied type, or `strategy` if it was

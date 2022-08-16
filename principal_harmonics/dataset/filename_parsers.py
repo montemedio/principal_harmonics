@@ -3,7 +3,7 @@ from typing import Union
 
 import librosa
 
-import principal_harmonics as ph
+from ..exceptions import *
 
 
 class FilenameParseException(RuntimeError):
@@ -81,7 +81,7 @@ def get_filename_parser(parser: Union[str, FilenameParser]):
         strategy (Union[str, FilenameParser]): 
 
     Raises:
-        ph.StrategyException: If the filename parser string is not known.
+        StrategyException: If the filename parser string is not known.
 
     Returns:
         ClipStrategy: A filename parser of the speficied type, or `parser` if it was
@@ -92,4 +92,4 @@ def get_filename_parser(parser: Union[str, FilenameParser]):
     elif parser in FILENAME_PARSERS:
         return FILENAME_PARSERS[parser]()
     else:
-        raise ph.StrategyException(f'Filename parser {parser}')
+        raise StrategyException(f'Filename parser {parser}')

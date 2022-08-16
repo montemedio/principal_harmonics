@@ -273,7 +273,7 @@ def get_peak_matcher(matcher: Union[str, PeakMatcher], n_frames=None) -> PeakMat
         strategy (Union[str, PeakMatcher]): 
 
     Raises:
-        ph.StrategyException: If the peak matching strategy is not known.
+        StrategyException: If the peak matching strategy is not known.
 
     Returns:
         PeakMatcher: A matcher of the specified type, or `matcher` if it was
